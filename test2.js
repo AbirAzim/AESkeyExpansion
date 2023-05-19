@@ -51,7 +51,6 @@ function multiplicationOfPolynomials(a, b){
           })
         }
 
-
         if(power0 !== -1){
           returnPolynomials[power0].count += 1
         } else {

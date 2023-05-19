@@ -176,6 +176,41 @@ function AESEncryption(cipherText){
   console.log(hexText)
 }
 
+function AESDecryption(cipherText){
+
+  let hexMatrix = [];
+
+  for(let i=0; i<cipherText.length; i++){
+    hexMatrix.push(asciiToHex(cipherText[i]));
+  }
+
+  let initialStateArray = addRoundKey(hexMatrix, 0);
+  let tempStateArray  = initialStateArray
+
+  for(let i=0; i< 10; i++){
+    for(let j=0; j< 16; j++){
+      let tempSBox = sBoxFunction(tempStateArray[j])
+      tempStateArray[j] = tempSBox
+    }
+
+    tempStateArray = shiftRows(tempStateArray)
+
+    //console.log(tempStateArray)
+
+    if(i !== 9){
+      tempStateArray = mixColumns(tempStateArray)
+      // console.log(tempStateArray)
+
+    }
+
+    tempStateArray = addRoundKey(tempStateArray, i+1)
+  }
+
+  let hexText = hexToText(tempStateArray)
+
+  console.log(hexText)
+}
+
 
 function addRoundKey(hexMatrix, rounds){
   let key = result[rounds];
@@ -275,7 +310,129 @@ function multiplicationOfPolynomials(a, b){
     for(let j = 0; j < b.length; j++){
       let value = a[i].power + b[j].power;
 
-      if(value === 8){
+      if(value === 10){
+        let power6 = returnPolynomials.findIndex(rp => {
+          return rp.power === 6
+        });
+
+        let power5 = returnPolynomials.findIndex(rp => {
+          return rp.power === 5
+        })
+
+        let power3 = returnPolynomials.findIndex(rp => {
+          return rp.power === 3
+        })
+
+        let power2 = returnPolynomials.findIndex(rp => {
+          return rp.power === 2
+        })
+
+        if(power6 !== -1){
+          returnPolynomials[power6].count += 1
+        }else {
+          returnPolynomials.push({
+            power: 6,
+            count: 1
+          })
+        }
+
+        if(power5 !== -1){
+          returnPolynomials[power5].count += 1
+        } else {
+          returnPolynomials.push({
+            power: 5,
+            count: 1
+          })
+        }
+
+        if(power3 !== -1){
+          returnPolynomials[power3].count += 1
+        } else {
+          returnPolynomials.push({
+            power: 3,
+            count: 1
+          })
+        }
+
+        if(power2 !== -1){
+          returnPolynomials[power2].count += 1
+        }else {
+          returnPolynomials.push({
+            power: 2,
+            count: 1
+          })
+        }
+      }
+
+      else if(value === 9){
+        let power4 = returnPolynomials.findIndex(rp => {
+          return rp.power === 4
+        });
+
+        let power3 = returnPolynomials.findIndex(rp => {
+          return rp.power === 3
+        })
+
+        let power2 = returnPolynomials.findIndex(rp => {
+          return rp.power === 2
+        })
+
+        let power1 = returnPolynomials.findIndex(rp => {
+          return rp.power === 1
+        })
+
+        let power0 = returnPolynomials.findIndex(rp => {
+          return rp.power === 0
+        })
+
+        if(power4 !== -1){
+          returnPolynomials[power4].count += 1
+        }else {
+          returnPolynomials.push({
+            power: 4,
+            count: 1
+          })
+        }
+
+        if(power3 !== -1){
+          returnPolynomials[power3].count += 1
+        } else {
+          returnPolynomials.push({
+            power: 3,
+            count: 1
+          })
+        }
+
+        if(power2 !== -1){
+          returnPolynomials[power2].count += 1
+        }else {
+          returnPolynomials.push({
+            power: 2,
+            count: 1
+          })
+        }
+
+        if(power1 !== -1){
+          returnPolynomials[power1].count += 1
+        } else {
+          returnPolynomials.push({
+            power: 1,
+            count: 1
+          })
+        }
+
+
+        if(power0 !== -1){
+          returnPolynomials[power0].count += 1
+        } else {
+          returnPolynomials.push({
+            power: 0,
+            count: 1
+          })
+        }
+      }
+
+      else if(value === 8){
         //irreducible polynomial theory 
         let power4 = returnPolynomials.findIndex(rp => {
           return rp.power === 4
@@ -348,6 +505,17 @@ function multiplicationOfPolynomials(a, b){
 
   let filterDuplicates = returnPolynomials.filter(rp => {
     return rp.count % 2 !== 0
+  })
+
+  filterDuplicates = returnPolynomials.map(rp => {
+    if(rp.count % 2 !== 0 && rp.count > 1){
+      return {
+        power: rp.power,
+        count: 1
+      }
+    } else {
+      return rp
+    }
   })
 
   for(let i = 0; i <= 7; i++){
