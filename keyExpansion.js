@@ -169,6 +169,8 @@ function AESEncryption(cipherText){
     }
 
     tempStateArray = addRoundKey(tempStateArray, i+1)
+
+    console.log(tempStateArray)
   }
 
   let hexText = hexToText(tempStateArray)
@@ -176,40 +178,40 @@ function AESEncryption(cipherText){
   console.log(hexText)
 }
 
-function AESDecryption(cipherText){
+// function AESDecryption(cipherText){
 
-  let hexMatrix = [];
+//   let hexMatrix = [];
 
-  for(let i=0; i<cipherText.length; i++){
-    hexMatrix.push(asciiToHex(cipherText[i]));
-  }
+//   for(let i=0; i<cipherText.length; i++){
+//     hexMatrix.push(asciiToHex(cipherText[i]));
+//   }
 
-  let initialStateArray = addRoundKey(hexMatrix, 0);
-  let tempStateArray  = initialStateArray
+//   let initialStateArray = addRoundKey(hexMatrix, 0);
+//   let tempStateArray  = initialStateArray
 
-  for(let i=0; i< 10; i++){
-    for(let j=0; j< 16; j++){
-      let tempSBox = sBoxFunction(tempStateArray[j])
-      tempStateArray[j] = tempSBox
-    }
+//   for(let i=0; i< 10; i++){
+//     for(let j=0; j< 16; j++){
+//       let tempSBox = sBoxFunction(tempStateArray[j])
+//       tempStateArray[j] = tempSBox
+//     }
 
-    tempStateArray = shiftRows(tempStateArray)
+//     tempStateArray = shiftRows(tempStateArray)
 
-    //console.log(tempStateArray)
+//     //console.log(tempStateArray)
 
-    if(i !== 9){
-      tempStateArray = mixColumns(tempStateArray)
-      // console.log(tempStateArray)
+//     if(i !== 9){
+//       tempStateArray = mixColumns(tempStateArray)
+//       // console.log(tempStateArray)
 
-    }
+//     }
 
-    tempStateArray = addRoundKey(tempStateArray, i+1)
-  }
+//     tempStateArray = addRoundKey(tempStateArray, i+1)
+//   }
 
-  let hexText = hexToText(tempStateArray)
+//   let hexText = hexToText(tempStateArray)
 
-  console.log(hexText)
-}
+//   console.log(hexText)
+// }
 
 
 function addRoundKey(hexMatrix, rounds){
@@ -507,7 +509,7 @@ function multiplicationOfPolynomials(a, b){
     return rp.count % 2 !== 0
   })
 
-  filterDuplicates = returnPolynomials.map(rp => {
+  filterDuplicates = filterDuplicates.map(rp => {
     if(rp.count % 2 !== 0 && rp.count > 1){
       return {
         power: rp.power,
